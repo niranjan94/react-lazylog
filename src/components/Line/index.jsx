@@ -1,5 +1,14 @@
 import { Component } from 'react';
-import { arrayOf, bool, func, number, object, shape, string } from 'prop-types';
+import {
+  arrayOf,
+  bool,
+  func,
+  number,
+  object,
+  oneOfType,
+  shape,
+  string,
+} from 'prop-types';
 import LineNumber from '../LineNumber';
 import LineContent from '../LineContent';
 import { line, lineHighlight, lineSelectable } from './index.module.css';
@@ -15,7 +24,7 @@ export default class Line extends Component {
         text: string,
       })
     ).isRequired,
-    number,
+    number: oneOfType([number, string]),
     rowHeight: number,
     highlight: bool,
     selectable: bool,
@@ -25,6 +34,7 @@ export default class Line extends Component {
     onRowClick: func,
     className: string,
     highlightClassName: string,
+    withTimestamp: bool,
   };
 
   static defaultProps = {
@@ -36,6 +46,7 @@ export default class Line extends Component {
     onRowClick: null,
     className: '',
     highlightClassName: '',
+    withTimestamp: false,
   };
 
   render() {
@@ -51,6 +62,7 @@ export default class Line extends Component {
       style,
       className,
       highlightClassName,
+      withTimestamp,
     } = this.props;
     const selectableClass = selectable ? ` ${lineSelectable}` : '';
     const highlightClass = highlight
@@ -70,6 +82,7 @@ export default class Line extends Component {
           number={number}
           highlight={highlight}
           onClick={onLineNumberClick}
+          withTimestamp={withTimestamp}
         />
         <LineContent
           number={number}

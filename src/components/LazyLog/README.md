@@ -35,3 +35,29 @@ consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
   <LazyLog extraLines={1} enableSearch text={text} caseInsensitive />
 </div>
 ```
+
+
+Log viewing using `text` from a string and containing timestamp :
+
+```js
+const text = `
+[2018-11-14 21:08:32.453Z] Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+[2018-11-14 21:08:32.453Z] accusantium doloremque laudantium, totam rem aperiam,
+[2018-11-14 21:08:32.453Z] eaque ipsa quae ab illo inventore veritatis et quasi architecto
+[2018-11-14 21:08:32.453Z] beatae vitae dicta sunt explicabo. Nemo enim ipsam
+[2018-11-14 21:08:32.453Z] voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed
+[2018-11-14 21:08:32.453Z] quia consequuntur magni dolores eos qui ratione
+[2018-11-14 21:08:32.453Z] voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
+[2018-11-14 21:08:32.453Z] ipsum quia dolor sit amet, consectetur, adipisci
+[2018-11-14 21:08:32.453Z] velit, sed quia non numquam eius modi tempora incidunt ut labore
+[2018-11-14 21:08:32.453Z] et dolore magnam aliquam quaerat voluptatem.
+[2018-11-14 21:08:32.453Z] Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit
+[2018-11-14 21:08:32.453Z] laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure
+[2018-11-14 21:08:32.453Z] reprehenderit qui in ea voluptate velit esse quam nihil molestiae
+[2018-11-14 21:08:32.453Z] consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+`;
+
+<div style={{ height: 300, width: 902 }}>
+  <LazyLog withTimestamp enableFilter={false} enableSearch text={text} caseInsensitive />
+</div>
+```

@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { bool, func, number, object } from 'prop-types';
+import { bool, func, number, object, oneOfType, string } from 'prop-types';
 import { lineNumber, lineNumberHighlight } from './index.module.css';
 
 /* eslint-disable jsx-a11y/anchor-has-content, jsx-a11y/anchor-is-valid */
@@ -14,7 +14,7 @@ export default class LineNumber extends Component {
     /**
      * The line number to display in the anchor.
      */
-    number: number.isRequired,
+    number: oneOfType([number, string]).isRequired,
     /**
      * Specify whether this line is highlighted.
      */
@@ -24,16 +24,24 @@ export default class LineNumber extends Component {
      */
     onClick: func,
     style: object,
+    withTimestamp: bool,
   };
 
   static defaultProps = {
     style: null,
     highlight: false,
     onClick: null,
+    withTimestamp: false,
   };
 
   render() {
-    const { highlight, onClick, number, style } = this.props;
+    const { highlight, onClick, number, withTimestamp } = this.props;
+    let { style } = this.props;
+
+    if (withTimestamp) {
+      style = style || {};
+      style.width = number.length * 7;
+    }
 
     return (
       <a

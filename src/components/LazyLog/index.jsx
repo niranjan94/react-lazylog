@@ -158,6 +158,14 @@ export default class LazyLog extends Component {
      * Flag to enable/disable case insensitive search
      */
     caseInsensitive: bool,
+    /**
+     * Flag to enable/disable timestamps instead of line numbers
+     */
+    withTimestamp: bool,
+    /**
+     * Flag to enable/disable filter view
+     */
+    enableFilter: bool,
   };
 
   static defaultProps = {
@@ -187,6 +195,8 @@ export default class LazyLog extends Component {
     lineClassName: '',
     highlightLineClassName: '',
     caseInsensitive: false,
+    withTimestamp: false,
+    enableFilter: true,
   };
 
   static getDerivedStateFromProps(
@@ -278,7 +288,7 @@ export default class LazyLog extends Component {
   }
 
   request() {
-    const { text } = this.props;
+    const { text, url } = this.props;
 
     this.endRequest();
 
@@ -293,11 +303,13 @@ export default class LazyLog extends Component {
       this.handleEnd(encodedLog);
     }
 
-    this.emitter = this.initEmitter();
-    this.emitter.on('update', this.handleUpdate);
-    this.emitter.on('end', this.handleEnd);
-    this.emitter.on('error', this.handleError);
-    this.emitter.emit('start');
+    if (url) {
+      this.emitter = this.initEmitter();
+      this.emitter.on('update', this.handleUpdate);
+      this.emitter.on('end', this.handleEnd);
+      this.emitter.on('error', this.handleError);
+      this.emitter.emit('start');
+    }
   }
 
   endRequest() {
@@ -568,6 +580,7 @@ export default class LazyLog extends Component {
       selectableLines,
       lineClassName,
       highlightLineClassName,
+      withTimestamp,
     } = this.props;
     const {
       highlight,
@@ -578,9 +591,21 @@ export default class LazyLog extends Component {
       resultLineUniqueIndexes,
     } = this.state;
     const linesToRender = isFilteringLinesWithMatches ? filteredLines : lines;
-    const number = isFilteringLinesWithMatches
-      ? resultLineUniqueIndexes[index]
-      : index + 1 + offset;
+    let decodedLine = decode(linesToRender.get(index));
+    let number;
+
+    if (withTimestamp) {
+      if (decodedLine[0] === '[') {
+        number = decodedLine.substr(1, decodedLine.indexOf(']') - 1);
+        decodedLine = decodedLine.substr(number.length + 2).trimLeft();
+      } else {
+        number = '';
+      }
+    } else {
+      number = isFilteringLinesWithMatches
+        ? resultLineUniqueIndexes[index]
+        : index + 1 + offset;
+    }
 
     return (
       <Line
@@ -590,11 +615,12 @@ export default class LazyLog extends Component {
         style={style}
         key={key}
         number={number}
+        withTimestamp={withTimestamp}
         formatPart={this.handleFormatPart()}
         selectable={selectableLines}
         highlight={highlight.includes(number)}
         onLineNumberClick={this.handleHighlight}
-        data={ansiparse(decode(linesToRender.get(index)))}
+        data={ansiparse(decodedLine)}
       />
     );
   };
@@ -644,7 +670,7 @@ export default class LazyLog extends Component {
   };
 
   render() {
-    const { enableSearch } = this.props;
+    const { enableSearch, enableFilter } = this.props;
     const {
       resultLines,
       isFilteringLinesWithMatches,
@@ -662,6 +688,7 @@ export default class LazyLog extends Component {
             onClearSearch={this.handleClearSearch}
             onFilterLinesWithMatches={this.handleFilterLinesWithMatches}
             resultsCount={resultLines.length}
+            enableFilter={enableFilter}
             disabled={count === 0}
           />
         )}

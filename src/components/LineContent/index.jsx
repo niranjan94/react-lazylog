@@ -1,5 +1,13 @@
 import { Component } from 'react';
-import { arrayOf, func, number, object, shape, string } from 'prop-types';
+import {
+  arrayOf,
+  func,
+  number,
+  object,
+  oneOfType,
+  shape,
+  string,
+} from 'prop-types';
 import LinePart from '../LinePart';
 import { lineContent } from './index.module.css';
 
@@ -24,7 +32,7 @@ export default class LineContent extends Component {
     /**
      * The line number being rendered.
      */
-    number: number.isRequired,
+    number: oneOfType([number, string]).isRequired,
     /**
      * Execute a function against each line part's
      * `text` property in `data` to process and

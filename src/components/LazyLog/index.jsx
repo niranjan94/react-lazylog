@@ -166,6 +166,10 @@ export default class LazyLog extends Component {
      * Flag to enable/disable filter view
      */
     enableFilter: bool,
+    /**
+     * Flag to either append/replace lines
+     */
+    replaceLines: bool,
   };
 
   static defaultProps = {
@@ -197,6 +201,7 @@ export default class LazyLog extends Component {
     caseInsensitive: false,
     withTimestamp: false,
     enableFilter: true,
+    replaceLines: false,
   };
 
   static getDerivedStateFromProps(
@@ -327,7 +332,14 @@ export default class LazyLog extends Component {
     const { scrollToLine, follow, stream } = this.props;
     const { lineLimit, count: previousCount } = this.state;
     let offset = 0;
-    let lines = (this.state.lines || List()).concat(moreLines);
+    let lines;
+
+    if (this.props.replaceLines) {
+      lines = List().concat(moreLines);
+    } else {
+      lines = (this.state.lines || List()).concat(moreLines);
+    }
+
     let count = lines.count();
 
     if (count > lineLimit) {

@@ -5,7 +5,7 @@
 .black { color: #4e4e4e; }
 .red { color: #ff6c60; }
 .green { color: #00aa00; }
-.yellow { color: #ffffb6; }
+.yellow { color: #ffff00; }
 .blue { color: #96cbfe; }
 .magenta { color: #ff73fd; }
 .cyan { color: #00aaaa; }
@@ -25,7 +25,7 @@
 .blackBg { background-color: #4e4e4e; }
 .redBg { background-color: #ff6c60; }
 .greenBg { background-color: #00aa00; }
-.yellowBg { background-color: #ffffb6; }
+.yellowBg { background-color: #ffff00; }
 .blueBg { background-color: #96cbfe; }
 .magentaBg { background-color: #ff73fd; }
 .cyanBg { background-color: #00aaaa; }
